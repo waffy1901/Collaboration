@@ -1,0 +1,49 @@
+h1 {
+    text-align: center;
+    color: #64B5F6;
+    font-size: 60px;
+}
+
+body {
+    background-image: url("skybackground.jpg");
+    background-repeat: no-repeat;
+    text-align: center;
+    color: #E3F2FD;
+}
+
+div {
+    
+}
+
+#City {
+    
+    font-size: 45px;
+}
+
+#Temperature {
+    font-size: 45px;
+}
+
+#feelsLike {
+    color: #0b3e85;
+}
+
+#maxTemp {
+    color: #0b3e85;
+}
+
+#minTemp {
+    color: #0b3e85;
+}
+
+#Pressure {
+    color: #0b3e85;
+}
+
+#Humidity {
+    color: #0b3e85;
+}
+
+#weatherDescription {
+    color: #0b3e85;
+}

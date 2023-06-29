@@ -1,5 +1,8 @@
 //location function --> get coordinates 
 // Location function: Get coordinates
+var currentCity;
+var currentLat;
+var currentLon;
 function getCoordinates() {
     return new Promise((resolve, reject) => {
       var options = {
@@ -13,7 +16,6 @@ function getCoordinates() {
         var lat = crd.latitude.toString();
         var lng = crd.longitude.toString();
         var coordinates = [lat, lng];
-        console.log(`Latitude: ${lat}, Longitude: ${lng}`);
         resolve(coordinates); // Resolve the promise with the coordinates
       }
   
@@ -34,7 +36,7 @@ function getCoordinates() {
       var lng = coordinates[1];
   
       xhr.open(
-        'GET',
+        "GET",
         `https://us1.locationiq.com/v1/reverse.php?key=pk.84900f437a1afaa4e93f8961f05cce39&lat=${lat}&lon=${lng}&format=json`,
         true
       );
@@ -44,7 +46,9 @@ function getCoordinates() {
         if (xhr.readyState == 4 && xhr.status == 200) {
           var response = JSON.parse(xhr.responseText);
           var city = response.address.city;
-          console.log(city);
+          currentCity = city;
+          currentLat = lat;
+          currentLon = lng;
           resolve(city); // Resolve the promise with the city
         }
       };
@@ -53,8 +57,8 @@ function getCoordinates() {
   
   // Get temperature
   function getTemperature() {
-    const api_key = '4fc8b020e0e454b126b87d4078185ae5';
-    const base_url = 'https://api.openweathermap.org/data/2.5/weather?';
+    const api_key = "4fc8b020e0e454b126b87d4078185ae5";
+    const base_url = "https://api.openweathermap.org/data/2.5/weather?";
   
     getCoordinates()
       .then((coordinates) => getCity(coordinates))
@@ -66,38 +70,39 @@ function getCoordinates() {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error('City Not Found');
+          throw new Error("City Not Found");
         }
       })
       .then((data) => {
         var y = data.main;
         const current_temperature = Math.round((y.temp - 273.15) * 9/5 + 32);
+        const feels_like = Math.round((y.feels_like - 273.15) * 9/5 + 32);
+        const max_temp = Math.round((y.temp_max - 273.15) * 9/5 + 32);
+        const min_temp = Math.round((y.temp_min - 273.15) * 9/5 + 32);
         const current_pressure = (y.pressure * 0.02952998057228486).toFixed(2);
         const current_humidity = y.humidity;
         const z = data.weather;
         const weather_description = z[0].description;
+        console.log(y);
+        console.log(z);
   
-        // console.log(
-        //   ' Temperature (in kelvin unit) = ' +
-        //     current_temperature +
-        //     '\n atmospheric pressure (in hPa unit) = ' +
-        //     current_pressure +
-        //     '\n humidity (in percentage) = ' +
-        //     current_humidity +
-        //     '\n description = ' +
-        //     weather_description
-        // );
-        document.getElementById("Temperature").innerHTML = 'Temperature: ' + current_temperature + '&deg; F';
-        document.getElementById("Pressure").innerHTML = 'Pressure: ' + current_pressure + ' Hg';
-        document.getElementById("Humidity").innerHTML = 'Humidity: ' + current_humidity + '%';
-        document.getElementById("weatherDescription").innerHTML = 'Current Weather Description: ' + weather_description;
+        currentLat = (currentLat * 1).toFixed(2);
+        currentLon = (currentLon * 1).toFixed(2);
+        document.getElementById("City").innerHTML = currentCity;
+        document.getElementById("Temperature").innerHTML = current_temperature + "&deg; F";
+        document.getElementById("feelsLike").innerHTML = "Feels Like: " + feels_like + "&deg; F";
+        document.getElementById("maxTemp").innerHTML = "High: " + max_temp + "&deg; F";
+        document.getElementById("minTemp").innerHTML = "Low: " + min_temp + "&deg; F";
+        document.getElementById("Pressure").innerHTML = "Pressure: " + current_pressure + " Hg";
+        document.getElementById("Humidity").innerHTML = "Humidity: " + current_humidity + "%";
+        document.getElementById("weatherDescription").innerHTML = "Current Weather Description: " + weather_description;
       })
       .catch((error) => {
-        console.log('Error:', error.message);
+        console.warn("Error:", error.message);
       });
   }
   
-  getTemperature();
+
   
 // converter function (F --> C)
 // get weather condition
