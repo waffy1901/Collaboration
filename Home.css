@@ -11,12 +11,18 @@ body {
     color: #E3F2FD;
 }
 
-div {
-    
+#Converter {
+    border-radius: 8px;
+    font-size: 18px;
+    padding: 5px 15px;
+    src: url('fonts/AmstelvarAlpha-VF.ttf');
+    font-family:'AmstelvarAlpha';
+    font-style: normal;
+    background-color: #2196F3;
+    color: #031834;
 }
 
 #City {
-    
     font-size: 45px;
 }
 
@@ -46,4 +52,17 @@ div {
 
 #weatherDescription {
     color: #0b3e85;
+}
+
+.card {
+    margin-right: auto;
+    margin-left: auto;
+    width: 275px;
+    box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2);
+    height: 325px;
+    border-radius: 5px;
+    backdrop-filter: blur(14px);
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    text-align: center;
 }

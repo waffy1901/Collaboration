@@ -1,5 +1,3 @@
-//location function --> get coordinates 
-// Location function: Get coordinates
 var currentCity;
 var currentLat;
 var currentLon;
@@ -7,6 +5,8 @@ var currentTemp;
 var currentFeel;
 var currentMaxTemp;
 var currentMinTemp;
+
+//Retrieves latitude and longitude coordinates of user's current location
 function getCoordinates() {
     return new Promise((resolve, reject) => {
       var options = {
@@ -32,7 +32,7 @@ function getCoordinates() {
     });
   }
   
-  // Get city
+  // Retrieves city name of user's current location using getCoordinates()
   function getCity(coordinates) {
     return new Promise((resolve, reject) => {
       var xhr = new XMLHttpRequest();
@@ -59,7 +59,8 @@ function getCoordinates() {
     });
   }
   
-  // Get temperature
+  // Retrieves current temperature, real feel temperature, high and low temperatures, pressure, humidity, and weather description
+  // Based on user's current location
   function getTemperature() {
     const api_key = "4fc8b020e0e454b126b87d4078185ae5";
     const base_url = "https://api.openweathermap.org/data/2.5/weather?";
@@ -104,10 +105,12 @@ function getCoordinates() {
       });
   }
 
+  //Loads weather information from getTemperature()
   function initializePage() {
     getTemperature();
   }
 
+  //Converts temperatures between Celsius and Fahrenheit
   function unitConverter() {
     var converter = document.getElementById("Converter");
     var curTemp = document.getElementById("Temperature");
@@ -132,7 +135,7 @@ function getCoordinates() {
       currentFeel = Math.round(((currentFeel) - 32) * 5/9);
       curMax.innerHTML = "High: " + Math.round(((currentMaxTemp) - 32) * 5/9) + "&deg; C";
       currentMaxTemp = Math.round(((currentMaxTemp) - 32) * 5/9);
-      curMin.innerHTML = "Min: " + Math.round(((currentMinTemp) - 32) * 5/9) + "&deg; C";
+      curMin.innerHTML = "Low: " + Math.round(((currentMinTemp) - 32) * 5/9) + "&deg; C";
       currentMinTemp = Math.round(((currentMinTemp) - 32) * 5/9);
     }
   }
