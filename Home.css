@@ -57,7 +57,7 @@ body {
 .card {
     margin-right: auto;
     margin-left: auto;
-    width: 275px;
+    width: 300px;
     box-shadow: 0 15px 25px rgba(129, 124, 124, 0.2);
     height: 325px;
     border-radius: 5px;
