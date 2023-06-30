@@ -3,6 +3,10 @@
 var currentCity;
 var currentLat;
 var currentLon;
+var currentTemp;
+var currentFeel;
+var currentMaxTemp;
+var currentMinTemp;
 function getCoordinates() {
     return new Promise((resolve, reject) => {
       var options = {
@@ -75,24 +79,22 @@ function getCoordinates() {
       })
       .then((data) => {
         var y = data.main;
-        const current_temperature = Math.round((y.temp - 273.15) * 9/5 + 32);
-        const feels_like = Math.round((y.feels_like - 273.15) * 9/5 + 32);
-        const max_temp = Math.round((y.temp_max - 273.15) * 9/5 + 32);
-        const min_temp = Math.round((y.temp_min - 273.15) * 9/5 + 32);
+        currentTemp = Math.round((y.temp - 273.15) * 9/5 + 32);
+        currentFeel = Math.round((y.feels_like - 273.15) * 9/5 + 32);
+        currentMaxTemp = Math.round((y.temp_max - 273.15) * 9/5 + 32);
+        currentMinTemp = Math.round((y.temp_min - 273.15) * 9/5 + 32);
         const current_pressure = (y.pressure * 0.02952998057228486).toFixed(2);
         const current_humidity = y.humidity;
         const z = data.weather;
         const weather_description = z[0].description;
-        console.log(y);
-        console.log(z);
   
         currentLat = (currentLat * 1).toFixed(2);
         currentLon = (currentLon * 1).toFixed(2);
         document.getElementById("City").innerHTML = currentCity;
-        document.getElementById("Temperature").innerHTML = current_temperature + "&deg; F";
-        document.getElementById("feelsLike").innerHTML = "Feels Like: " + feels_like + "&deg; F";
-        document.getElementById("maxTemp").innerHTML = "High: " + max_temp + "&deg; F";
-        document.getElementById("minTemp").innerHTML = "Low: " + min_temp + "&deg; F";
+        document.getElementById("Temperature").innerHTML = currentTemp + "&deg; F";
+        document.getElementById("feelsLike").innerHTML = "Feels Like: " + currentFeel + "&deg; F";
+        document.getElementById("maxTemp").innerHTML = "High: " + currentMaxTemp + "&deg; F";
+        document.getElementById("minTemp").innerHTML = "Low: " + currentMinTemp + "&deg; F";
         document.getElementById("Pressure").innerHTML = "Pressure: " + current_pressure + " Hg";
         document.getElementById("Humidity").innerHTML = "Humidity: " + current_humidity + "%";
         document.getElementById("weatherDescription").innerHTML = "Current Weather Description: " + weather_description;
@@ -101,11 +103,36 @@ function getCoordinates() {
         console.warn("Error:", error.message);
       });
   }
-  
 
-  
-// converter function (F --> C)
-// get weather condition
-// add city
-// get precipitation map
-// air quality index
+  function initializePage() {
+    getTemperature();
+  }
+
+  function unitConverter() {
+    var converter = document.getElementById("Converter");
+    var curTemp = document.getElementById("Temperature");
+    var curFeel = document.getElementById("feelsLike");
+    var curMax = document.getElementById("maxTemp");
+    var curMin = document.getElementById("minTemp");
+    if (converter.innerHTML === "Convert to Fahrenheit") {
+      converter.innerHTML = "Convert to Celsius";
+      curTemp.innerHTML = Math.round(((currentTemp) * 9/5) + 32) + "&deg; F";
+      currentTemp = Math.round(((currentTemp) * 9/5) + 32);
+      curFeel.innerHTML = "Feels Like: " + Math.round(((currentFeel) * 9/5) + 32) + "&deg; F";
+      currentFeel = Math.round(((currentFeel) * 9/5) + 32);
+      curMax.innerHTML = "High: " + Math.round(((currentMaxTemp) * 9/5) + 32) + "&deg; F";
+      currentMaxTemp = Math.round(((currentMaxTemp) * 9/5) + 32);
+      curMin.innerHTML = "Low: " + Math.round(((currentMinTemp) * 9/5) + 32) + "&deg; F";
+      currentMinTemp = Math.round(((currentMinTemp) * 9/5) + 32);
+    } else if (converter.innerHTML === "Convert to Celsius") {
+      converter.innerHTML = "Convert to Fahrenheit";
+      curTemp.innerHTML = Math.round(((currentTemp) - 32) * 5/9) + "&deg; C";
+      currentTemp = Math.round(((currentTemp) - 32) * 5/9);
+      curFeel.innerHTML = "Feels Like: " + Math.round(((currentFeel) - 32) * 5/9) + "&deg; C";
+      currentFeel = Math.round(((currentFeel) - 32) * 5/9);
+      curMax.innerHTML = "High: " + Math.round(((currentMaxTemp) - 32) * 5/9) + "&deg; C";
+      currentMaxTemp = Math.round(((currentMaxTemp) - 32) * 5/9);
+      curMin.innerHTML = "Min: " + Math.round(((currentMinTemp) - 32) * 5/9) + "&deg; C";
+      currentMinTemp = Math.round(((currentMinTemp) - 32) * 5/9);
+    }
+  }
